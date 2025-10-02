@@ -4,6 +4,10 @@ import TaskCard from "../components/TaskCard";
 import Pagination from "../components/Pagination";
 import API from "../api/axiosInstance";
 
+
+
+
+
 export default function AllTasksPage() {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
