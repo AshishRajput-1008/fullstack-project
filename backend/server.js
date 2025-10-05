@@ -1,3 +1,4 @@
+// server.js
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
@@ -9,7 +10,7 @@ import { fileURLToPath } from "url";
 import authRoutes from "./src/routes/auth.js";
 import taskRoutes from "./src/routes/tasks.js";
 
-// Import Task model
+// Import Task model for auto-complete logic
 import Task from "./src/models/Task.js";
 
 dotenv.config();
@@ -31,6 +32,7 @@ mongoose
   .then(() => {
     console.log("✅ MongoDB connected");
 
+    // Auto-complete overdue tasks every minute
     setInterval(async () => {
       try {
         const now = new Date();
@@ -51,14 +53,17 @@ mongoose
 // ------------------- Serve Frontend (Vite) -------------------
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Serve static files from frontend/dist
 app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
+// Catch-all route for SPA
 app.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "../frontend/dist", "index.html"));
 });
 
 // ------------------- Server -------------------
-const PORT = process.env.PORT || 5005;
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
